@@ -10,8 +10,8 @@ let lastRepTime = Date.now();
 let repDuration = 0;
 let formFeedback = "";
 
-// Mapeo de ejercicios
-const exercises = {
+// Mapeo de ejercicios - se cargará desde el servidor
+let exercises = {
     "1": "Bicep Curl",
     "2": "Shoulder Press",
     "3": "Lateral Raise",
@@ -19,6 +19,19 @@ const exercises = {
     "5": "Hammer Curl",
     "6": "Tricep Extension"
 };
+
+// Cargar ejercicios desde el servidor
+async function loadExercises() {
+    try {
+        const response = await fetch('/api/exercises');
+        if (response.ok) {
+            exercises = await response.json();
+            console.log('Ejercicios cargados desde el servidor');
+        }
+    } catch (error) {
+        console.warn('No se pudieron cargar ejercicios desde el servidor, usando valores por defecto');
+    }
+}
 
 // Función para calcular ángulo entre tres puntos
 function calculateAngle(a, b, c) {
@@ -363,12 +376,20 @@ function initializeCamera() {
         height: 720
     });
     
-    camera.start();
+    camera.start()
+        .catch((error) => {
+            console.error('Error al acceder a la cámara:', error);
+            const feedbackElement = document.getElementById('feedback');
+            feedbackElement.textContent = 'Error: No se puede acceder a la cámara. Por favor, permite el acceso a la cámara en tu navegador.';
+            feedbackElement.className = 'feedback warning';
+            feedbackElement.style.display = 'block';
+        });
 }
 
 // Inicializar la aplicación cuando se carga la página
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
     console.log('Inicializando TrackG...');
+    await loadExercises();
     initializePose();
     initializeCamera();
     updateUI();

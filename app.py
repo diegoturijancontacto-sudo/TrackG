@@ -31,7 +31,15 @@ def get_exercises():
 
 
 if __name__ == '__main__':
+    import os
+    
     print("=== TrackG - Aplicación Web de Seguimiento de Ejercicios ===")
     print("\nAbriendo servidor web en http://localhost:5000")
     print("Presiona Ctrl+C para detener el servidor\n")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    
+    # Solo usar debug mode y 0.0.0.0 en desarrollo
+    # En producción, usar un servidor WSGI como gunicorn
+    debug_mode = os.environ.get('FLASK_ENV') == 'development'
+    host = '127.0.0.1' if not debug_mode else '0.0.0.0'
+    
+    app.run(debug=debug_mode, host=host, port=5000)
