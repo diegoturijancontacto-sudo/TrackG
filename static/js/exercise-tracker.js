@@ -20,19 +20,6 @@ let exercises = {
     "6": "Tricep Extension"
 };
 
-// Cargar ejercicios desde el servidor
-async function loadExercises() {
-    try {
-        const response = await fetch('/api/exercises');
-        if (response.ok) {
-            exercises = await response.json();
-            console.log('Ejercicios cargados desde el servidor');
-        }
-    } catch (error) {
-        console.warn('No se pudieron cargar ejercicios desde el servidor:', error, '- usando valores por defecto');
-    }
-}
-
 // Función para calcular ángulo entre tres puntos
 function calculateAngle(a, b, c) {
     const radians = Math.atan2(c.y - b.y, c.x - b.x) - Math.atan2(a.y - b.y, a.x - b.x);
@@ -387,9 +374,9 @@ function initializeCamera() {
 }
 
 // Inicializar la aplicación cuando se carga la página
-window.addEventListener('load', async () => {
+window.addEventListener('load', () => {
     console.log('Inicializando TrackG...');
-    await loadExercises();
+    console.log('Ejercicios disponibles:', exercises);
     initializePose();
     initializeCamera();
     updateUI();

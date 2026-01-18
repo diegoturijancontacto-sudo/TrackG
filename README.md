@@ -20,11 +20,40 @@ TrackG es una aplicación de seguimiento corporal que utiliza MediaPipe para det
 
 ## Requisitos
 
+### Para la aplicación web (GitHub Pages):
+- Navegador web moderno (Chrome, Firefox, Edge, Safari)
+- Cámara web
+- Conexión a internet (para cargar MediaPipe)
+
+### Para la aplicación de escritorio:
 - Python 3.7 o superior
 - Cámara web
 - Dependencias listadas en `requirements.txt`
 
-## Instalación
+## Uso
+
+### Aplicación Web en GitHub Pages (Más Fácil - Recomendada)
+
+**¡La aplicación está disponible online sin necesidad de instalación!**
+
+Simplemente visita: **[https://diegoturijancontacto-sudo.github.io/TrackG/](https://diegoturijancontacto-sudo.github.io/TrackG/)**
+
+1. Abre el enlace en tu navegador
+2. **Permite el acceso a la cámara** cuando el navegador lo solicite
+3. **Selecciona un ejercicio** haciendo clic en los botones
+4. La aplicación comenzará a rastrear tus movimientos automáticamente
+
+### Aplicación Web Local (Desarrollo)
+
+#### Opción 1: Sin servidor (recomendada para desarrollo)
+```bash
+# Simplemente abre el archivo index.html en tu navegador
+# O usa un servidor HTTP simple:
+python -m http.server 8000
+# Luego visita: http://localhost:8000
+```
+
+#### Opción 2: Con Flask (para desarrollo del backend)
 
 1. Clona el repositorio:
 ```bash
@@ -37,23 +66,19 @@ cd TrackG
 pip install -r requirements.txt
 ```
 
-## Uso
-
-### Aplicación Web (Recomendada)
-
-1. Ejecuta el servidor web:
+3. Ejecuta el servidor web:
 ```bash
 python app.py
 ```
 
-2. Abre tu navegador web y visita:
+4. Abre tu navegador web y visita:
 ```
 http://localhost:5000
 ```
 
-3. **Permite el acceso a la cámara** cuando el navegador lo solicite.
+5. **Permite el acceso a la cámara** cuando el navegador lo solicite.
 
-4. **Selecciona un ejercicio** haciendo clic en los botones:
+6. **Selecciona un ejercicio** haciendo clic en los botones:
    - Bicep Curl (curl de bíceps)
    - Shoulder Press (press de hombros)
    - Lateral Raise (elevaciones laterales)
@@ -61,7 +86,7 @@ http://localhost:5000
    - Hammer Curl (curl martillo)
    - Tricep Extension (extensiones de tríceps)
 
-5. La aplicación comenzará a rastrear tus movimientos automáticamente.
+7. La aplicación comenzará a rastrear tus movimientos automáticamente.
 
 ### Aplicación de Escritorio (Alternativa)
 
@@ -124,34 +149,56 @@ Cada ejercicio tiene rangos de ángulos específicos:
 
 ```
 TrackG/
-├── app.py                    # Servidor web Flask
+├── index.html                # Página principal (GitHub Pages)
+├── app.py                    # Servidor web Flask (opcional)
 ├── exercise_tracker.py       # Aplicación de escritorio
 ├── exercise_utils.py         # Utilidades y lógica de ejercicios
 ├── templates/
-│   └── index.html           # Plantilla HTML para la web
+│   └── index.html           # Plantilla HTML para Flask
 ├── static/
 │   ├── css/
 │   │   └── style.css        # Estilos de la aplicación web
 │   └── js/
 │       └── exercise-tracker.js  # Lógica JavaScript del cliente
+├── .github/
+│   └── workflows/
+│       └── deploy.yml       # GitHub Actions para despliegue
+├── .nojekyll                # Configuración de GitHub Pages
 ├── requirements.txt          # Dependencias de Python
 ├── test_exercise_tracker.py  # Tests unitarios
 ├── .gitignore               # Archivos a ignorar en Git
 └── README.md                # Este archivo
 ```
 
+## Despliegue en GitHub Pages
+
+La aplicación está configurada para desplegarse automáticamente en GitHub Pages:
+
+1. **Fork** este repositorio o clónalo en tu cuenta de GitHub
+2. Ve a **Settings** → **Pages** en tu repositorio
+3. En **Source**, selecciona **GitHub Actions**
+4. El workflow se ejecutará automáticamente al hacer push a `main` o `master`
+5. Tu aplicación estará disponible en: `https://tu-usuario.github.io/TrackG/`
+
+La aplicación funciona completamente en el navegador sin necesidad de servidor backend, utilizando:
+- MediaPipe JavaScript para la detección de pose
+- HTML5 Canvas para la visualización
+- APIs del navegador para el acceso a la cámara
+
 ## Tecnologías Utilizadas
 
-### Backend (Aplicación de Escritorio)
-- **MediaPipe** - Framework de ML para detección de pose
-- **OpenCV** - Procesamiento de video y visualización
-- **NumPy** - Cálculos matemáticos y de ángulos
-
-### Web (Aplicación Web)
-- **Flask** - Framework web de Python
+### Web (GitHub Pages - Aplicación Principal)
 - **MediaPipe JavaScript** - Detección de pose en el navegador
 - **HTML5/CSS3/JavaScript** - Interfaz de usuario moderna
 - **Canvas API** - Visualización de pose en tiempo real
+- **GitHub Pages** - Hosting estático gratuito
+- **GitHub Actions** - Despliegue automatizado
+
+### Backend (Aplicación de Escritorio - Opcional)
+- **MediaPipe** - Framework de ML para detección de pose
+- **OpenCV** - Procesamiento de video y visualización
+- **NumPy** - Cálculos matemáticos y de ángulos
+- **Flask** - Framework web de Python (para desarrollo local)
 
 ## Contribuir
 
