@@ -29,7 +29,7 @@ async function loadExercises() {
             console.log('Ejercicios cargados desde el servidor');
         }
     } catch (error) {
-        console.warn('No se pudieron cargar ejercicios desde el servidor, usando valores por defecto');
+        console.warn('No se pudieron cargar ejercicios desde el servidor:', error, '- usando valores por defecto');
     }
 }
 

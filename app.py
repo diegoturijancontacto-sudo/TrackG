@@ -37,9 +37,16 @@ if __name__ == '__main__':
     print("\nAbriendo servidor web en http://localhost:5000")
     print("Presiona Ctrl+C para detener el servidor\n")
     
-    # Solo usar debug mode y 0.0.0.0 en desarrollo
-    # En producción, usar un servidor WSGI como gunicorn
-    debug_mode = os.environ.get('FLASK_ENV') == 'development'
-    host = '127.0.0.1' if not debug_mode else '0.0.0.0'
+    # Configuración de seguridad:
+    # - En desarrollo: debug=True, escucha en todas las interfaces (0.0.0.0)
+    # - En producción: debug=False, solo localhost (127.0.0.1)
+    # Para producción, configurar: export FLASK_ENV=production
+    debug_mode = os.environ.get('FLASK_ENV', 'development') == 'development'
+    host = '0.0.0.0' if debug_mode else '127.0.0.1'
+    
+    if debug_mode:
+        print("Modo: Desarrollo (debug activado)")
+    else:
+        print("Modo: Producción (solo localhost)")
     
     app.run(debug=debug_mode, host=host, port=5000)
