@@ -325,13 +325,13 @@ function onResults(results) {
     // Procesar landmarks si se detectan
     if (results.poseLandmarks) {
         // Dibujar conectores
-        drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, {
+        window.drawConnectors(canvasCtx, results.poseLandmarks, window.POSE_CONNECTIONS, {
             color: '#00FF00',
             lineWidth: 4
         });
         
         // Dibujar landmarks
-        drawLandmarks(canvasCtx, results.poseLandmarks, {
+        window.drawLandmarks(canvasCtx, results.poseLandmarks, {
             color: '#FF0000',
             lineWidth: 2,
             radius: 6
