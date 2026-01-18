@@ -3,6 +3,15 @@ import mediapipe as mp
 import numpy as np
 import time
 from typing import Dict, Tuple, Optional
+from exercise_utils import (
+    calculate_angle,
+    process_bicep_curl,
+    process_shoulder_press,
+    process_lateral_raise,
+    process_front_raise,
+    process_hammer_curl,
+    process_tricep_extension
+)
 
 
 class ExerciseTracker:
@@ -38,29 +47,7 @@ class ExerciseTracker:
             "6": "Tricep Extension"
         }
     
-    def calculate_angle(self, a: Tuple, b: Tuple, c: Tuple) -> float:
-        """
-        Calcula el ángulo entre tres puntos.
-        
-        Args:
-            a, b, c: Tuplas de coordenadas (x, y)
-        
-        Returns:
-            Ángulo en grados
-        """
-        a = np.array(a)
-        b = np.array(b)
-        c = np.array(c)
-        
-        radians = np.arctan2(c[1] - b[1], c[0] - b[0]) - \
-                  np.arctan2(a[1] - b[1], a[0] - b[0])
-        angle = np.abs(radians * 180.0 / np.pi)
-        
-        if angle > 180.0:
-            angle = 360 - angle
-        
-        return angle
-    
+
     def get_landmarks(self, landmarks) -> Dict[str, Tuple[float, float]]:
         """
         Extrae las coordenadas de los landmarks relevantes.
@@ -90,190 +77,6 @@ class ExerciseTracker:
                          landmarks[self.mp_pose.PoseLandmark.RIGHT_HIP.value].y),
         }
     
-    def process_bicep_curl(self, points: Dict[str, Tuple[float, float]]) -> Tuple[bool, str]:
-        """
-        Procesa curl de bíceps (izquierdo).
-        
-        Returns:
-            (rep_completed, feedback)
-        """
-        angle = self.calculate_angle(
-            points['left_shoulder'],
-            points['left_elbow'],
-            points['left_wrist']
-        )
-        
-        feedback = ""
-        rep_completed = False
-        
-        # Detectar fase del ejercicio
-        if angle > 160:
-            feedback = "Brazo extendido - ¡Bien!"
-            if self.exercise_stage == "up":
-                rep_completed = True
-            self.exercise_stage = "down"
-        elif angle < 40:
-            feedback = "Flexión completa - ¡Perfecto!"
-            self.exercise_stage = "up"
-        elif 40 <= angle <= 90:
-            feedback = "En movimiento..."
-        else:
-            feedback = "Mantén el codo estable"
-        
-        return rep_completed, feedback
-    
-    def process_shoulder_press(self, points: Dict[str, Tuple[float, float]]) -> Tuple[bool, str]:
-        """
-        Procesa press de hombros.
-        
-        Returns:
-            (rep_completed, feedback)
-        """
-        left_angle = self.calculate_angle(
-            points['left_hip'],
-            points['left_shoulder'],
-            points['left_elbow']
-        )
-        
-        elbow_angle = self.calculate_angle(
-            points['left_shoulder'],
-            points['left_elbow'],
-            points['left_wrist']
-        )
-        
-        feedback = ""
-        rep_completed = False
-        
-        if elbow_angle < 90:
-            feedback = "Posición inicial - ¡Listo!"
-            if self.exercise_stage == "up":
-                rep_completed = True
-            self.exercise_stage = "down"
-        elif elbow_angle > 160:
-            feedback = "Brazos extendidos - ¡Excelente!"
-            self.exercise_stage = "up"
-        else:
-            feedback = "Presionando..."
-        
-        return rep_completed, feedback
-    
-    def process_lateral_raise(self, points: Dict[str, Tuple[float, float]]) -> Tuple[bool, str]:
-        """
-        Procesa elevaciones laterales.
-        
-        Returns:
-            (rep_completed, feedback)
-        """
-        angle = self.calculate_angle(
-            points['left_hip'],
-            points['left_shoulder'],
-            points['left_elbow']
-        )
-        
-        feedback = ""
-        rep_completed = False
-        
-        if angle < 30:
-            feedback = "Brazos abajo - ¡Bien!"
-            if self.exercise_stage == "up":
-                rep_completed = True
-            self.exercise_stage = "down"
-        elif angle > 80:
-            feedback = "Brazos a la altura del hombro - ¡Perfecto!"
-            self.exercise_stage = "up"
-        else:
-            feedback = "Elevando..."
-        
-        return rep_completed, feedback
-    
-    def process_front_raise(self, points: Dict[str, Tuple[float, float]]) -> Tuple[bool, str]:
-        """
-        Procesa elevaciones frontales.
-        
-        Returns:
-            (rep_completed, feedback)
-        """
-        # Ángulo vertical del brazo
-        shoulder_wrist_angle = self.calculate_angle(
-            points['left_hip'],
-            points['left_shoulder'],
-            points['left_wrist']
-        )
-        
-        feedback = ""
-        rep_completed = False
-        
-        if shoulder_wrist_angle < 30:
-            feedback = "Brazos abajo - ¡Listo!"
-            if self.exercise_stage == "up":
-                rep_completed = True
-            self.exercise_stage = "down"
-        elif shoulder_wrist_angle > 80:
-            feedback = "Brazos al frente - ¡Excelente!"
-            self.exercise_stage = "up"
-        else:
-            feedback = "Elevando al frente..."
-        
-        return rep_completed, feedback
-    
-    def process_hammer_curl(self, points: Dict[str, Tuple[float, float]]) -> Tuple[bool, str]:
-        """
-        Procesa curl martillo.
-        
-        Returns:
-            (rep_completed, feedback)
-        """
-        angle = self.calculate_angle(
-            points['left_shoulder'],
-            points['left_elbow'],
-            points['left_wrist']
-        )
-        
-        feedback = ""
-        rep_completed = False
-        
-        if angle > 160:
-            feedback = "Brazo extendido - ¡Bien!"
-            if self.exercise_stage == "up":
-                rep_completed = True
-            self.exercise_stage = "down"
-        elif angle < 45:
-            feedback = "Flexión completa - ¡Perfecto!"
-            self.exercise_stage = "up"
-        else:
-            feedback = "Contrayendo..."
-        
-        return rep_completed, feedback
-    
-    def process_tricep_extension(self, points: Dict[str, Tuple[float, float]]) -> Tuple[bool, str]:
-        """
-        Procesa extensiones de tríceps.
-        
-        Returns:
-            (rep_completed, feedback)
-        """
-        angle = self.calculate_angle(
-            points['left_shoulder'],
-            points['left_elbow'],
-            points['left_wrist']
-        )
-        
-        feedback = ""
-        rep_completed = False
-        
-        if angle < 60:
-            feedback = "Brazo flexionado - ¡Bien!"
-            if self.exercise_stage == "extended":
-                rep_completed = True
-            self.exercise_stage = "flexed"
-        elif angle > 160:
-            feedback = "Extensión completa - ¡Excelente!"
-            self.exercise_stage = "extended"
-        else:
-            feedback = "Extendiendo..."
-        
-        return rep_completed, feedback
-    
     def process_exercise(self, landmarks) -> None:
         """
         Procesa el ejercicio seleccionado actualmente.
@@ -285,22 +88,24 @@ class ExerciseTracker:
         
         rep_completed = False
         feedback = ""
+        new_stage = self.exercise_stage
         
         # Procesar según el ejercicio seleccionado
         if self.exercise_name == "Bicep Curl":
-            rep_completed, feedback = self.process_bicep_curl(points)
+            rep_completed, feedback, new_stage = process_bicep_curl(points, self.exercise_stage)
         elif self.exercise_name == "Shoulder Press":
-            rep_completed, feedback = self.process_shoulder_press(points)
+            rep_completed, feedback, new_stage = process_shoulder_press(points, self.exercise_stage)
         elif self.exercise_name == "Lateral Raise":
-            rep_completed, feedback = self.process_lateral_raise(points)
+            rep_completed, feedback, new_stage = process_lateral_raise(points, self.exercise_stage)
         elif self.exercise_name == "Front Raise":
-            rep_completed, feedback = self.process_front_raise(points)
+            rep_completed, feedback, new_stage = process_front_raise(points, self.exercise_stage)
         elif self.exercise_name == "Hammer Curl":
-            rep_completed, feedback = self.process_hammer_curl(points)
+            rep_completed, feedback, new_stage = process_hammer_curl(points, self.exercise_stage)
         elif self.exercise_name == "Tricep Extension":
-            rep_completed, feedback = self.process_tricep_extension(points)
+            rep_completed, feedback, new_stage = process_tricep_extension(points, self.exercise_stage)
         
         self.form_feedback = feedback
+        self.exercise_stage = new_stage
         
         # Actualizar contador si se completó una repetición
         if rep_completed:
