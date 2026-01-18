@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrackG - Seguimiento de Ejercicios</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1675469240/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6.1629159505/control_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.3.1675469240/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1675469240/pose.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>TrackG - Seguimiento de Ejercicios</h1>
+            <p class="subtitle">Rastreador de ejercicios con pesas usando IA</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Panel de información -->
+            <div class="info-panel">
+                <div class="info-card">
+                    <h3>Ejercicio Actual</h3>
+                    <p id="current-exercise" class="value">Bicep Curl</p>
+                </div>
+                <div class="info-card">
+                    <h3>Repeticiones</h3>
+                    <p id="rep-counter" class="value">0</p>
+                </div>
+                <div class="info-card">
+                    <h3>Tiempo</h3>
+                    <p id="rep-time" class="value">0.0s</p>
+                </div>
+            </div>
+
+            <!-- Video y canvas -->
+            <div class="video-container">
+                <video id="video" class="input-video" autoplay playsinline></video>
+                <canvas id="output-canvas" class="output-canvas"></canvas>
+                <div id="feedback" class="feedback"></div>
+            </div>
+
+            <!-- Panel de control -->
+            <div class="control-panel">
+                <h3>Selecciona un Ejercicio</h3>
+                <div class="exercise-buttons">
+                    <button class="exercise-btn active" data-exercise="1" onclick="changeExercise('1')">
+                        1. Bicep Curl
+                    </button>
+                    <button class="exercise-btn" data-exercise="2" onclick="changeExercise('2')">
+                        2. Shoulder Press
+                    </button>
+                    <button class="exercise-btn" data-exercise="3" onclick="changeExercise('3')">
+                        3. Lateral Raise
+                    </button>
+                    <button class="exercise-btn" data-exercise="4" onclick="changeExercise('4')">
+                        4. Front Raise
+                    </button>
+                    <button class="exercise-btn" data-exercise="5" onclick="changeExercise('5')">
+                        5. Hammer Curl
+                    </button>
+                    <button class="exercise-btn" data-exercise="6" onclick="changeExercise('6')">
+                        6. Tricep Extension
+                    </button>
+                </div>
+            </div>
+
+            <!-- Instrucciones -->
+            <div class="instructions">
+                <h3>Instrucciones</h3>
+                <ul>
+                    <li>Permite el acceso a la cámara cuando se solicite</li>
+                    <li>Colócate de lado a la cámara para una mejor detección</li>
+                    <li>Mantén una distancia de 1.5-2 metros de la cámara</li>
+                    <li>Asegúrate de tener buena iluminación</li>
+                    <li>Realiza los ejercicios de forma controlada</li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2024 TrackG - Diego Turijan</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/exercise-tracker.js') }}"></script>
+</body>
+</html>

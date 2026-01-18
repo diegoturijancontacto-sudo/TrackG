@@ -39,7 +39,33 @@ pip install -r requirements.txt
 
 ## Uso
 
-1. Ejecuta la aplicación:
+### Aplicación Web (Recomendada)
+
+1. Ejecuta el servidor web:
+```bash
+python app.py
+```
+
+2. Abre tu navegador web y visita:
+```
+http://localhost:5000
+```
+
+3. **Permite el acceso a la cámara** cuando el navegador lo solicite.
+
+4. **Selecciona un ejercicio** haciendo clic en los botones:
+   - Bicep Curl (curl de bíceps)
+   - Shoulder Press (press de hombros)
+   - Lateral Raise (elevaciones laterales)
+   - Front Raise (elevaciones frontales)
+   - Hammer Curl (curl martillo)
+   - Tricep Extension (extensiones de tríceps)
+
+5. La aplicación comenzará a rastrear tus movimientos automáticamente.
+
+### Aplicación de Escritorio (Alternativa)
+
+1. Ejecuta la aplicación de escritorio:
 ```bash
 python exercise_tracker.py
 ```
@@ -98,17 +124,34 @@ Cada ejercicio tiene rangos de ángulos específicos:
 
 ```
 TrackG/
-├── exercise_tracker.py    # Aplicación principal
-├── requirements.txt       # Dependencias de Python
-├── .gitignore            # Archivos a ignorar en Git
-└── README.md             # Este archivo
+├── app.py                    # Servidor web Flask
+├── exercise_tracker.py       # Aplicación de escritorio
+├── exercise_utils.py         # Utilidades y lógica de ejercicios
+├── templates/
+│   └── index.html           # Plantilla HTML para la web
+├── static/
+│   ├── css/
+│   │   └── style.css        # Estilos de la aplicación web
+│   └── js/
+│       └── exercise-tracker.js  # Lógica JavaScript del cliente
+├── requirements.txt          # Dependencias de Python
+├── test_exercise_tracker.py  # Tests unitarios
+├── .gitignore               # Archivos a ignorar en Git
+└── README.md                # Este archivo
 ```
 
 ## Tecnologías Utilizadas
 
+### Backend (Aplicación de Escritorio)
 - **MediaPipe** - Framework de ML para detección de pose
 - **OpenCV** - Procesamiento de video y visualización
 - **NumPy** - Cálculos matemáticos y de ángulos
+
+### Web (Aplicación Web)
+- **Flask** - Framework web de Python
+- **MediaPipe JavaScript** - Detección de pose en el navegador
+- **HTML5/CSS3/JavaScript** - Interfaz de usuario moderna
+- **Canvas API** - Visualización de pose en tiempo real
 
 ## Contribuir
 
