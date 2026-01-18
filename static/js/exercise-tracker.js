@@ -20,13 +20,6 @@ let exercises = {
     "6": "Tricep Extension"
 };
 
-// Los ejercicios están definidos localmente (no requiere servidor)
-async function loadExercises() {
-    // Ejercicios ya están definidos en la variable global exercises
-    console.log('Ejercicios disponibles:', exercises);
-    return Promise.resolve();
-}
-
 // Función para calcular ángulo entre tres puntos
 function calculateAngle(a, b, c) {
     const radians = Math.atan2(c.y - b.y, c.x - b.x) - Math.atan2(a.y - b.y, a.x - b.x);
@@ -381,9 +374,9 @@ function initializeCamera() {
 }
 
 // Inicializar la aplicación cuando se carga la página
-window.addEventListener('load', async () => {
+window.addEventListener('load', () => {
     console.log('Inicializando TrackG...');
-    await loadExercises();
+    console.log('Ejercicios disponibles:', exercises);
     initializePose();
     initializeCamera();
     updateUI();

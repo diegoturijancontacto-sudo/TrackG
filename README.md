@@ -185,26 +185,6 @@ La aplicación funciona completamente en el navegador sin necesidad de servidor 
 - HTML5 Canvas para la visualización
 - APIs del navegador para el acceso a la cámara
 
-## Estructura del Código
-
-```
-TrackG/
-├── app.py                    # Servidor web Flask
-├── exercise_tracker.py       # Aplicación de escritorio
-├── exercise_utils.py         # Utilidades y lógica de ejercicios
-├── templates/
-│   └── index.html           # Plantilla HTML para la web
-├── static/
-│   ├── css/
-│   │   └── style.css        # Estilos de la aplicación web
-│   └── js/
-│       └── exercise-tracker.js  # Lógica JavaScript del cliente
-├── requirements.txt          # Dependencias de Python
-├── test_exercise_tracker.py  # Tests unitarios
-├── .gitignore               # Archivos a ignorar en Git
-└── README.md                # Este archivo
-```
-
 ## Tecnologías Utilizadas
 
 ### Web (GitHub Pages - Aplicación Principal)
