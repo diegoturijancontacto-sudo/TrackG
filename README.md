@@ -13,7 +13,7 @@ TrackG es una aplicación de seguimiento corporal que utiliza MediaPipe para det
   5. **Hammer Curl** - Curl martillo
   6. **Tricep Extension** - Extensiones de tríceps
 - **Contador de repeticiones automático**
-- **Cronómetro entre flexiones** - Mide el tiempo entre cada repetición
+- **Cronómetro entre repeticiones** - Mide el tiempo entre cada repetición
 - **Validación de ángulos** - Detecta si el ejercicio se realiza correctamente
 - **Retroalimentación visual** - Indica si la forma es correcta o incorrecta
 - **Interfaz intuitiva** - Fácil de usar con controles por teclado
