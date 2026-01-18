@@ -20,17 +20,11 @@ let exercises = {
     "6": "Tricep Extension"
 };
 
-// Cargar ejercicios desde el servidor
+// Los ejercicios están definidos localmente (no requiere servidor)
 async function loadExercises() {
-    try {
-        const response = await fetch('/api/exercises');
-        if (response.ok) {
-            exercises = await response.json();
-            console.log('Ejercicios cargados desde el servidor');
-        }
-    } catch (error) {
-        console.warn('No se pudieron cargar ejercicios desde el servidor:', error, '- usando valores por defecto');
-    }
+    // Ejercicios ya están definidos en la variable global exercises
+    console.log('Ejercicios disponibles:', exercises);
+    return Promise.resolve();
 }
 
 // Función para calcular ángulo entre tres puntos
